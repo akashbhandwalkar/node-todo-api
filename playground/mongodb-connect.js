@@ -24,11 +24,32 @@ if(error){
     //     }
     // });
 
-    db.collection("Todos").find({
-        name:"Akash Bhandwalkar"
-    }).toArray().then((docs)=>{
-        console.log("docs-->", JSON.stringify(docs, undefined, 4));
-    },(error)=>{
+    // db.collection("Todos").find({
+    //     name:"Akash Bhandwalkar"
+    // }).toArray().then((docs)=>{
+    //     console.log("docs-->", JSON.stringify(docs, undefined, 4));
+    // },(error)=>{
+    //     console.log("error-->", error);
+    // })
+
+    // db.collection('Todos').deleteMany({
+    //     name:"Akash Bhandwalkar"
+    // }).then((result)=>{
+    //     console.log(JSON.stringify(result, undefined,2));
+    // })
+
+    //  db.collection('Todos').deleteOne({
+    //     name:"Akash Bhandwalkar"
+    // }).then((result)=>{
+    //     console.log(JSON.stringify(result, undefined,2));
+    // });
+
+    db.collection('Todos').findOneAndDelete({
+        flag:true
+    }).then( (result)=>{
+        console.log(JSON.stringify(result, undefined, 2));
+    })
+    .catch( (error)=>{
         console.log("error-->", error);
     })
 
