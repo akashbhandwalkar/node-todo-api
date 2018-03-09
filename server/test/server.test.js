@@ -2,12 +2,14 @@ const expect = require('expect');
 const request = require('supertest');
 
 const { app } = require('./../server');
-
+const { ObjectID } = require('mongodb');
 const { Todo } = require('./../models/Todo');
 
 var _todos = [{
+    _id: new ObjectID(),
     text:"Akash"
 },{
+    _id: new ObjectID(),    
     text:"Vivek"
 }];
 
@@ -80,3 +82,35 @@ describe('GET /todos', ()=>{
             .end(done);
     })
 })
+
+describe('GET /todos/:id', ()=>{
+    
+        it('should return todo back', (done)=>{
+            request(app)
+                .get(`/todos/${_todos[0]._id.toHexString()}`)
+                .expect(200)
+                .expect((res)=>{
+                    expect(res.body.text).toBe(_todos[0].text);
+                })
+                .end(done);
+        });
+
+        it('should return invalid id', (done)=>{
+            request(app)
+                .get('/todo/1')
+                .expect(404)
+                .end(done)
+        })
+
+        it('should return null', (done)=>{
+            request(app)
+                .get("/todos/5aa24165c2c2aac2440a92ej")
+                .expect(404)
+                .expect((res)=>{
+                    if(!res){
+                        return done();
+                    }
+                })
+                .end(done);
+        })
+    })

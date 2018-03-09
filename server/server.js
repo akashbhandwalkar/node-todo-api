@@ -36,19 +36,20 @@ app.get('/todos', (req, res)=>{
 
 //get todos by id
 app.get('/todos/:id', (req, res)=>{
+    console.log("params-->", req.params);
     if(ObjectID.isValid(req.params.id)){
 
         Todo.findById(req.params.id).then( (docs)=>{
             if(docs){
                 res.status(200).send(docs)
             }else{
-                res.status(400).send("No Todo");
+                res.status(404).send("No Todo");
             }
         }).catch((e)=>{
-            res.status(400).send(e);
+            res.status(404).send(e);
         })
     }else{
-        res.status(500).send("Not valid object id");
+        res.status(404).send("Not valid object id");
     }
 })
 
