@@ -8,7 +8,7 @@ var { User } = require('./models/User')
 var  { ObjectID } = require('mongodb');
 var app = express();
 app.use(bodyParser()); //middleware convert string req.body to json
-
+const port = process.env.PORT || 3000;
 
 //Create Todos
 app.post('/todos', (req, res)=>{
@@ -53,7 +53,23 @@ app.get('/todos/:id', (req, res)=>{
     }
 })
 
-app.listen(3000, ()=>{
+app.delete('/todos/:id', (req, res)=>{
+   var id = req.params.id;
+   if(!ObjectID.isValid(id)){
+        res.status(404).send({error:"Invalid ID"});
+   }
+  Todo.findByIdAndRemove(id)
+   .then((res)=>{
+       if(!res){
+            res.status(404).send();
+       }
+       res.status(200).send(res)
+   }).catch((e)=>{
+       res.status(500).send(e);
+   })
+})
+
+app.listen(port, ()=>{
     console.log("Server started on 3000!");
 });
 
